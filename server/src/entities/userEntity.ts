@@ -1,22 +1,18 @@
 import { v4 as uuid } from "uuid";
 
-import { IExpense } from "../interfaces/IExpense";
-import { IIncome } from "../interfaces/IIncome";
+// import { IExpense } from "../interfaces/IExpense";
+// import { IIncome } from "../interfaces/IIncome";
 
 export class User {
   public readonly id: string;
   public name: string;
   public email: string;
   public password: string;
-  public expenses: IExpense[] | []
-  public incomes: IIncome[] | []
 
   constructor(name: string, email: string, password: string) {
     this.id = uuid();
     this.name = name;
     this.email = email;
     this.password = password;
-    this.expenses = [];
-    this.incomes = [];
   }
 }

@@ -77,7 +77,12 @@ export const userController = {
       const newUser = new User(name, email, hashedPassword);
 
       await prisma.user.create({
-        data: newUser,
+        data: {
+          id: newUser.id,
+          name: newUser.name,
+          email: newUser.email,
+          password: newUser.password, 
+        }
       });
 
       const token = generateToken(newUser.id, "7d");

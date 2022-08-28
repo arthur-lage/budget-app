@@ -25,7 +25,7 @@ export function AuthProvider({ children }: AuthProviderType) {
   const navigate = useNavigate();
 
   function handleSetToken(newToken: string | null) {
-    localStorage.setItem("money-management:token", JSON.stringify(newToken))
+    localStorage.setItem("money-management:token", JSON.stringify(newToken));
     setToken(newToken);
   }
 
@@ -47,7 +47,7 @@ export function AuthProvider({ children }: AuthProviderType) {
     }
 
     if (!token) {
-      return
+      return;
     }
 
     //@ts-ignore
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: AuthProviderType) {
 
     api
       .get("/users/auth")
-      .then((res) => handleSetCurrentUser(res.data))
+      .then((res) => handleSetCurrentUser(res.data.user))
       .catch((err) => {
         console.error(err);
       });
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: AuthProviderType) {
     if (!currentUser) {
       return navigate("/login");
     }
-    
+
     return navigate("/");
   }, [currentUser]);
 
