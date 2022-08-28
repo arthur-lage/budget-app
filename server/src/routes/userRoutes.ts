@@ -1,63 +1,20 @@
 import { Router } from "express";
-import { prisma } from "../database/prisma";
 
-import { v4 as uuid } from "uuid";
+import { userController } from "../controllers/userController";
+import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 
 const userRoutes = Router();
 
-userRoutes.get("/", async (req, res) => {
-  try {
-    const users = await prisma.user.findMany({});
+userRoutes.get("/", AuthMiddleware, userController.getAll);
 
-    return res.status(200).json(users);
-  } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-});
+userRoutes.get("/:id", userController.getById);
 
-userRoutes.post("/", async (req, res) => {
-  try {
-  } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-});
+userRoutes.post("/", userController.create);
 
-userRoutes.post("/login", async (req, res) => {
-  try {
-  } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-});
+userRoutes.post("/login", userController.login);
 
-userRoutes.delete("/", async (req, res) => {
-  try {
-    await prisma.user.deleteMany({});
+userRoutes.delete("/", userController.deleteAll);
 
-    return res.status(200).json({ message: "Users deleted." });
-  } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-});
-
-userRoutes.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    await prisma.user.delete({
-      where: {
-        id,
-      },
-    });
-
-    return res.status(200).json({ message: `User with id ${id} deleted.` });
-  } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: err.message });
-  }
-});
+userRoutes.delete("/:id", userController.deleteById);
 
 export { userRoutes };
