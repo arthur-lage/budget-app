@@ -5,6 +5,8 @@ import { AuthMiddleware } from "../middlewares/AuthMiddleware";
 
 const userRoutes = Router();
 
+userRoutes.get("/auth", AuthMiddleware, userController.auth);
+
 userRoutes.get("/", AuthMiddleware, userController.getAll);
 
 userRoutes.get("/:id", userController.getById);

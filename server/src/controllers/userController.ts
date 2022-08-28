@@ -7,7 +7,6 @@ import {
   validatePassword,
 } from "../utils/validators";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { generateToken } from "../utils/generateToken";
 
 export const userController = {
@@ -67,7 +66,7 @@ export const userController = {
         },
       });
 
-      if (!emailExists) {
+      if (emailExists) {
         return res
           .status(409)
           .json({ message: "This email is already being used." });
@@ -158,6 +157,41 @@ export const userController = {
       });
 
       return res.status(200).json({ message: `User with id ${id} deleted.` });
+    } catch (err: any) {
+      console.error(err);
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  async auth(req: Request, res: Response) {
+    try {
+      //@ts-ignore
+      if (!req.user) {
+        return res.status(401).json({ message: "Invalid user authentication" });
+      }
+
+      //@ts-ignore
+      const { id } = req.user;
+
+      const currentUser = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      const userInfo = {
+        id: currentUser?.id,
+        name: currentUser?.name,
+        email: currentUser?.email,
+        //@ts-ignore
+        expenses: currentUser?.expenses,
+        //@ts-ignore
+        incomes: currentUser?.incomes,
+      };
+
+      return res
+        .status(200)
+        .json({ user: userInfo, message: "User authenticated successfully." });
     } catch (err: any) {
       console.error(err);
       return res.status(500).json({ message: err.message });
