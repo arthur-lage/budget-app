@@ -18,10 +18,10 @@ export function NewOperationModal({
     e.preventDefault();
 
     addNewOperation({
-      name: operationName,
-      type: operationType,
-      amount: operationAmount,
-      date: operationDate,
+      name: String(operationName),
+      type: String(operationType),
+      amount: Number(operationAmount),
+      date: new Date(operationDate),
     });
   }
 
