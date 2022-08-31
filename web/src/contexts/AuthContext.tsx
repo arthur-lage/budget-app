@@ -10,6 +10,7 @@ type AuthContextType = {
   currentUser: IUser | null;
   handleSetCurrentUser: (newUser: IUser | null) => void;
   logout: () => void;
+  updateUserBalance: (newBalance: number) => void;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -61,6 +62,17 @@ export function AuthProvider({ children }: AuthProviderType) {
       });
   }, [token]);
 
+  function updateUserBalance(newBalance: number) {
+    const newUser = {
+      id: String(currentUser?.id),
+      name: String(currentUser?.name),
+      email: String(currentUser?.email),
+      balance: Number(newBalance),
+    };
+
+    handleSetCurrentUser(newUser);
+  }
+
   useEffect(() => {
     if (!currentUser) {
       return navigate("/login");
@@ -75,6 +87,7 @@ export function AuthProvider({ children }: AuthProviderType) {
     currentUser,
     handleSetCurrentUser,
     logout,
+    updateUserBalance,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

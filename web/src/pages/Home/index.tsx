@@ -5,7 +5,7 @@ import { IOperation } from "../../interfaces/IOperation";
 import { api } from "../../services/api";
 
 export function Home() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, updateUserBalance, logout } = useAuth();
   const [userOperations, setUserOperations] = useState<IOperation[] | null>(
     null
   );
@@ -20,19 +20,21 @@ export function Home() {
   }
 
   async function addNewOperation(operation: IOperation) {
-    const newOperation = await api.post("/operations", {
+    const res = await api.post("/operations", {
       name: operation.name,
       type: operation.type,
       amount: operation.amount,
       date: operation.date,
     });
 
+    updateUserBalance(res.data.newBalance);
+
     //@ts-ignore
-    setUserOperations((prev) => [...prev, newOperation.data.operation]);
+    setUserOperations((prev) => [...prev, res.data.operation]);
   }
 
   async function deleteOperation(operationId: string) {
-    await api.delete("/operations/" + operationId);
+    const res = await api.delete("/operations/" + operationId);
 
     let newUserOperationsList =
       userOperations && userOperations?.length > 1
@@ -41,12 +43,24 @@ export function Home() {
           )
         : [];
 
+    updateUserBalance(res.data.newBalance);
+
     setUserOperations(newUserOperationsList);
+  }
+
+  async function handleDeleteAllOperations() {
+    const res = await api.delete("/operations");
+
+    updateUserBalance(res.data.newBalance);
+
+    setUserOperations([]);
   }
 
   useEffect(() => {
     async function fetchUserOperations() {
       const res = await api.get("/operations");
+
+      updateUserBalance(res.data.newBalance);
 
       setUserOperations(res.data.operations);
     }
@@ -54,16 +68,11 @@ export function Home() {
     fetchUserOperations();
   }, []);
 
-  async function handleDeleteAllOperations() {
-    await api.delete("/operations");
-
-    setUserOperations([]);
-  }
-
   return (
     <div>
       <h1>Home</h1>
       <h2>Hello, {currentUser?.name}</h2>
+      <h3>Current balance: {currentUser?.balance}</h3>
 
       <div className="operations">
         <button onClick={handleDeleteAllOperations}>

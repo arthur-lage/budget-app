@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../database/prisma";
 import { Operation } from "../entities/operationEntity";
+import { recalculateBalance } from "../utils/recalculateBalance";
 
 export const operationController = {
   async getByUser(req: Request, res: Response) {
@@ -14,7 +15,18 @@ export const operationController = {
         },
       });
 
-      return res.status(200).json({ operations: userOperations });
+      const newBalance = recalculateBalance(userOperations);
+
+      await prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          balance: newBalance,
+        },
+      });
+
+      return res.status(200).json({ newBalance, operations: userOperations });
     } catch (err: any) {
       console.error(err);
 
@@ -28,6 +40,30 @@ export const operationController = {
       const { id } = req.user;
       const { name, type, amount, date } = req.body;
 
+      const currentUser = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+      });
+
+      if (!currentUser) {
+        return res.status(401).json({ message: "User is not authenticated " });
+      }
+
+      let newBalance = 0;
+
+      const currentBalance = currentUser.balance;
+
+      console.log("old balance" + currentBalance);
+
+      if (type == "expense") {
+        newBalance = currentBalance - amount;
+      } else if (type == "income") {
+        newBalance = currentBalance + amount;
+      }
+
+      console.log("new balance" + newBalance);
+
       const convertedDate = new Date(date);
 
       const newOperation = new Operation(name, type, amount, convertedDate, id);
@@ -36,7 +72,24 @@ export const operationController = {
         data: newOperation,
       });
 
-      return res.status(200).json({ operation: createdOperation, message: "Operation created!" });
+      console.log("before update balance");
+
+      await prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          balance: newBalance,
+        },
+      });
+
+      console.log("after update balance");
+
+      return res.status(200).json({
+        newBalance,
+        operation: createdOperation,
+        message: "Operation created!",
+      });
     } catch (err: any) {
       console.error(err);
 
@@ -55,9 +108,33 @@ export const operationController = {
         },
       });
 
+      const currentUser = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+        include: {
+          operations: true,
+        },
+      });
+
+      if (!currentUser) {
+        return;
+      }
+
+      const newBalance = recalculateBalance(currentUser?.operations);
+
+      await prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          balance: newBalance,
+        },
+      });
+
       return res
         .status(200)
-        .json({ message: "Operations deleted successfully." });
+        .json({ newBalance, message: "Operations deleted successfully." });
     } catch (err: any) {
       console.error(err);
       return res.status(500).json({ message: err.message });
@@ -77,9 +154,33 @@ export const operationController = {
         },
       });
 
+      const currentUser = await prisma.user.findFirst({
+        where: {
+          id,
+        },
+        include: {
+          operations: true,
+        },
+      });
+
+      if (!currentUser) {
+        return;
+      }
+
+      const newBalance = recalculateBalance(currentUser?.operations);
+
+      await prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          balance: newBalance,
+        },
+      });
+
       return res
         .status(200)
-        .json({ message: "Operation deleted successfully." });
+        .json({ newBalance, message: "Operation deleted successfully." });
     } catch (err: any) {
       console.error(err);
       return res.status(500).json({ message: err.message });

@@ -8,11 +8,13 @@ export class User {
   public name: string;
   public email: string;
   public password: string;
+  public balance: number;
 
   constructor(name: string, email: string, password: string) {
     this.id = uuid();
     this.name = name;
     this.email = email;
     this.password = password;
+    this.balance = 0;
   }
 }

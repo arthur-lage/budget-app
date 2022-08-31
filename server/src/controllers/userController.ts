@@ -8,6 +8,7 @@ import {
 } from "../utils/validators";
 import bcrypt from "bcrypt";
 import { generateToken } from "../utils/generateToken";
+import { recalculateBalance } from "../utils/recalculateBalance";
 
 export const userController = {
   async getAll(req: Request, res: Response) {
@@ -81,8 +82,8 @@ export const userController = {
           id: newUser.id,
           name: newUser.name,
           email: newUser.email,
-          password: newUser.password, 
-        }
+          password: newUser.password,
+        },
       });
 
       const token = generateToken(newUser.id, "7d");
@@ -188,10 +189,7 @@ export const userController = {
         id: currentUser?.id,
         name: currentUser?.name,
         email: currentUser?.email,
-        //@ts-ignore
-        expenses: currentUser?.expenses,
-        //@ts-ignore
-        incomes: currentUser?.incomes,
+        balance: currentUser?.balance,
       };
 
       return res
