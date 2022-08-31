@@ -59,6 +59,8 @@ export function AuthProvider({ children }: AuthProviderType) {
       .then((res) => handleSetCurrentUser(res.data.user))
       .catch((err) => {
         console.error(err);
+        handleSetCurrentUser(null)
+        setToken(null)
       });
   }, [token]);
 
