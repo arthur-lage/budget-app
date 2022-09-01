@@ -11,6 +11,9 @@ export function Home() {
   const [expensesPercentage, setExpensesPercentage] = useState(0);
   const [incomesPercentage, setIncomesPercentage] = useState(0);
 
+  const [incomesTotal, setIncomesTotal] = useState(0);
+  const [expensesTotal, setExpensesTotal] = useState(0);
+
   const [userOperations, setUserOperations] = useState<IOperation[] | null>(
     null
   );
@@ -76,28 +79,37 @@ export function Home() {
   useEffect(() => {
     if (!userOperations) return;
 
-    function calculateExpensesAndIncomesPercentage() {
+    function calculateExpensesAndIncomes() {
       let newExpensesPercentage = 0;
       let newIncomesPercentage = 0;
+      let newIncomesTotal = 0;
+      let newExpensesTotal = 0;
 
       userOperations?.forEach((operation) => {
-        if (operation.type === "expense") {
-          newExpensesPercentage += operation.amount;
-        }
+        if (operation) {
+          if (operation.type === "expense") {
+            newExpensesPercentage += operation.amount;
+            newExpensesTotal += operation.amount;
+          }
 
-        if (operation.type === "income") {
-          newIncomesPercentage += operation.amount;
-        }
+          if (operation.type === "income") {
+            newIncomesPercentage += operation.amount;
+            newIncomesTotal += operation.amount;
+          }
+        } 
       });
 
       let convertedExpensesPercentage =
         (newExpensesPercentage / newIncomesPercentage) * 100;
 
       setExpensesPercentage(convertedExpensesPercentage);
+      setExpensesTotal(newExpensesTotal);
+
       setIncomesPercentage(100 - convertedExpensesPercentage);
+      setIncomesTotal(newIncomesTotal);
     }
 
-    calculateExpensesAndIncomesPercentage();
+    calculateExpensesAndIncomes();
   }, [userOperations]);
 
   return (
@@ -106,8 +118,13 @@ export function Home() {
       <h2>Hello, {currentUser?.name}</h2>
       <h3>Current balance: {currentUser?.balance}</h3>
 
-      {userOperations && (
-        <PieChart expenses={expensesPercentage} incomes={incomesPercentage} />
+      {userOperations && userOperations.length > 0 && (
+        <PieChart
+          incomesTotal={incomesTotal}
+          expensesTotal={expensesTotal}
+          expenses={expensesPercentage}
+          incomes={incomesPercentage}
+        />
       )}
 
       <div className="operations">
