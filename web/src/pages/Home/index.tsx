@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import { NewOperationModal } from "../../components/NewOperationModal";
+import { PieChart } from "../../components/PieChart";
 import { useAuth } from "../../hooks/useAuth";
 import { IOperation } from "../../interfaces/IOperation";
 import { api } from "../../services/api";
 
 export function Home() {
   const { currentUser, updateUserBalance, logout } = useAuth();
+
+  const [expensesPercentage, setExpensesPercentage] = useState(0);
+  const [incomesPercentage, setIncomesPercentage] = useState(0);
+
   const [userOperations, setUserOperations] = useState<IOperation[] | null>(
     null
   );
@@ -68,11 +73,42 @@ export function Home() {
     fetchUserOperations();
   }, []);
 
+  useEffect(() => {
+    if (!userOperations) return;
+
+    function calculateExpensesAndIncomesPercentage() {
+      let newExpensesPercentage = 0;
+      let newIncomesPercentage = 0;
+
+      userOperations?.forEach((operation) => {
+        if (operation.type === "expense") {
+          newExpensesPercentage += operation.amount;
+        }
+
+        if (operation.type === "income") {
+          newIncomesPercentage += operation.amount;
+        }
+      });
+
+      let convertedExpensesPercentage =
+        (newExpensesPercentage / newIncomesPercentage) * 100;
+
+      setExpensesPercentage(convertedExpensesPercentage);
+      setIncomesPercentage(100 - convertedExpensesPercentage);
+    }
+
+    calculateExpensesAndIncomesPercentage();
+  }, [userOperations]);
+
   return (
     <div>
       <h1>Home</h1>
       <h2>Hello, {currentUser?.name}</h2>
       <h3>Current balance: {currentUser?.balance}</h3>
+
+      {userOperations && (
+        <PieChart expenses={expensesPercentage} incomes={incomesPercentage} />
+      )}
 
       <div className="operations">
         <button onClick={handleDeleteAllOperations}>
