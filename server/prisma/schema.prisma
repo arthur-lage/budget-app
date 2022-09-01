@@ -26,6 +26,7 @@ model Operation {
   type   String
   amount Float
   date   DateTime
+  createdAt DateTime @default(now())
   User User? @relation(fields: [userId], references: [id])
   userId String?
 }
