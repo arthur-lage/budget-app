@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { IUser } from "../interfaces/IUser";
 import { api } from "../services/api";
@@ -23,6 +23,7 @@ export function AuthProvider({ children }: AuthProviderType) {
   const [token, setToken] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   function handleSetToken(newToken: string | null) {
@@ -59,8 +60,8 @@ export function AuthProvider({ children }: AuthProviderType) {
       .then((res) => handleSetCurrentUser(res.data.user))
       .catch((err) => {
         console.error(err);
-        handleSetCurrentUser(null)
-        setToken(null)
+        handleSetCurrentUser(null);
+        setToken(null);
       });
   }, [token]);
 
@@ -76,11 +77,10 @@ export function AuthProvider({ children }: AuthProviderType) {
   }
 
   useEffect(() => {
-    if (!currentUser) {
-      return navigate("/login");
+    if (currentUser) {
+      if (location.pathname === "/login" || location.pathname === "/register")
+        return navigate("/");
     }
-
-    return navigate("/");
   }, [currentUser]);
 
   const value = {
