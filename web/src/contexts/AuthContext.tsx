@@ -11,6 +11,7 @@ type AuthContextType = {
   handleSetCurrentUser: (newUser: IUser | null) => void;
   logout: () => void;
   updateUserBalance: (newBalance: number) => void;
+  isEmailVerified: boolean;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -22,6 +23,7 @@ type AuthProviderType = {
 export function AuthProvider({ children }: AuthProviderType) {
   const [token, setToken] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -57,7 +59,13 @@ export function AuthProvider({ children }: AuthProviderType) {
 
     api
       .get("/users/auth")
-      .then((res) => handleSetCurrentUser(res.data.user))
+      .then((res) => {
+        handleSetCurrentUser(res.data.user);
+
+        if (res.data.user.isEmailVerified) {
+          setIsEmailVerified(true);
+        }
+      })
       .catch((err) => {
         console.error(err);
         handleSetCurrentUser(null);
@@ -77,11 +85,18 @@ export function AuthProvider({ children }: AuthProviderType) {
   }
 
   useEffect(() => {
-    if (currentUser) {
-      if (location.pathname === "/login" || location.pathname === "/register")
-        return navigate("/");
+    if (!currentUser) {
+      return navigate("/login");
     }
-  }, [currentUser]);
+
+    if (!isEmailVerified) {
+      return navigate("/not-verified");
+    }
+
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      return navigate("/");
+    }
+  }, [currentUser, isEmailVerified]);
 
   const value = {
     token,
@@ -90,6 +105,7 @@ export function AuthProvider({ children }: AuthProviderType) {
     handleSetCurrentUser,
     logout,
     updateUserBalance,
+    isEmailVerified,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

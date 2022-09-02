@@ -2,7 +2,11 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
 export function PrivateRoute({ children }: any) {
-  const { currentUser } = useAuth();
+  const { currentUser, isEmailVerified } = useAuth();
 
-  return currentUser ? children : <Navigate to="/login" />;
+  return currentUser ? (
+    <>{isEmailVerified ? children : <Navigate to="/not-verified" />}</>
+  ) : (
+    <Navigate to="/login" />
+  );
 }

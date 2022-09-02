@@ -11,6 +11,8 @@ userRoutes.get("/", AuthMiddleware, userController.getAll);
 
 userRoutes.get("/:id", userController.getById);
 
+userRoutes.get("/verify", userController.verifyEmail);
+
 userRoutes.post("/", userController.create);
 
 userRoutes.post("/login", userController.login);
@@ -18,6 +20,8 @@ userRoutes.post("/login", userController.login);
 userRoutes.post("/forgot-password", userController.forgotPassword)
 
 userRoutes.post("/recover", userController.recoverPassword)
+
+userRoutes.patch("/new-email-validation-code", AuthMiddleware, userController.newEmailValidationCode);
 
 userRoutes.delete("/", userController.deleteAll);
 

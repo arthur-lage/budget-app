@@ -19,6 +19,8 @@ model User {
   balance             Float                 @default(0)
   operations          Operation[]
   forgotPasswordToken ForgotPasswordToken[]
+  verifyEmailToken VerifyEmailToken[]
+  isEmailVerified Boolean @default(false)
 }
 
 model Operation {
@@ -38,5 +40,14 @@ model ForgotPasswordToken {
   User      User?    @relation(fields: [userId], references: [id])
   userId    String?
   createdAt DateTime @default(now())
-  expiresIn Int      @default(600000)
+  expiresIn Int
+}
+
+model VerifyEmailToken {
+  id String @id
+  token String
+  User User? @relation(fields: [userId], references: [id])
+  userId String?
+  createdAt DateTime @default(now())
+  expiresIn Int
 }
