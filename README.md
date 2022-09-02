@@ -1,4 +1,4 @@
-# money-manager
+# budget-app
 
 ## ✉ About
 
