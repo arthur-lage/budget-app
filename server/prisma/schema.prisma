@@ -11,22 +11,32 @@ datasource db {
 }
 
 model User {
-  id         String      @id
-  name       String
-  email      String      @unique
-  password   String
-  createdAt  DateTime    @default(now())
-  balance Float @default(0)
-  operations Operation[]
+  id                  String                @id
+  name                String
+  email               String                @unique
+  password            String
+  createdAt           DateTime              @default(now())
+  balance             Float                 @default(0)
+  operations          Operation[]
+  forgotPasswordToken ForgotPasswordToken[]
 }
 
 model Operation {
-  id     String   @id
-  name   String
-  type   String
-  amount Float
-  date   DateTime
+  id        String   @id
+  name      String
+  type      String
+  amount    Float
+  date      DateTime
   createdAt DateTime @default(now())
-  User User? @relation(fields: [userId], references: [id])
-  userId String?
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+}
+
+model ForgotPasswordToken {
+  id        String   @id
+  token     String
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  createdAt DateTime @default(now())
+  expiresIn Int      @default(600000)
 }

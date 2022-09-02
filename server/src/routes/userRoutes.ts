@@ -15,6 +15,10 @@ userRoutes.post("/", userController.create);
 
 userRoutes.post("/login", userController.login);
 
+userRoutes.post("/forgot-password", userController.forgotPassword)
+
+userRoutes.post("/recover", userController.recoverPassword)
+
 userRoutes.delete("/", userController.deleteAll);
 
 userRoutes.delete("/:id", userController.deleteById);

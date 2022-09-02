@@ -48,6 +48,7 @@ export function Login() {
         <button type="submit">Login</button>
       </form>
 
+      <Link to="/forgot-password">Forgot your password? Click here</Link>
       <Link to="/register">Don't have an account yet? Create one</Link>
     </div>
   );
