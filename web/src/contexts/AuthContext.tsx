@@ -56,8 +56,6 @@ export function AuthProvider({ children }: AuthProviderType) {
     //@ts-ignore
     api.defaults.headers.authorization = `Bearer ${token}`;
     
-    console.log("fazendo req");
-
     api
       .get("/users/auth")
       .then((res) => {
