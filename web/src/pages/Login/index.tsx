@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { handleSetToken } = useAuth();
+  const { currentUser, handleSetToken } = useAuth();
+
+  const navigate = useNavigate();
 
   async function handleForm(e: FormEvent) {
     e.preventDefault();
@@ -19,6 +21,12 @@ export function Login() {
 
     handleSetToken(res.data.token);
   }
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser]);
 
   return (
     <div>

@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid'
 
-export class ForgotPasswordToken {
+export class VerifyEmailToken {
   public readonly id: string
   public token: string
   public userId: string

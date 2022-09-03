@@ -12,6 +12,9 @@ import { ForgotPasswordToken } from "../entities/forgotPasswordTokenEntity";
 
 import crypto from "crypto";
 import { sendMail } from "../utils/sendMail";
+import { VerifyEmailToken } from "../entities/verifyEmailTokenEntity";
+
+const APP_URL = "http://127.0.0.1:5173";
 
 export const userController = {
   async getAll(req: Request, res: Response) {
@@ -90,6 +93,32 @@ export const userController = {
       });
 
       const token = generateToken(newUser.id, "7d");
+
+      const code = crypto.randomBytes(32).toString("hex");
+
+      const newVerifyEmailToken = new VerifyEmailToken(code, newUser.id);
+
+      await prisma.verifyEmailToken.create({
+        data: newVerifyEmailToken,
+      });
+
+      sendMail({
+        toEmail: email,
+        emailSubject: "Verify your email",
+        emailHTML: `
+          <b>Hello, ${name}</b>,
+
+          <br />
+
+          <p>
+            Welcome to Budget App! Before starting using our app, you need to verify your email, which can be done by clicking the link below:
+          </p>
+          
+          <br />
+
+          <a href="${APP_URL}/verify?code=${code}">Verify Email</a>
+        `,
+      });
 
       return res
         .status(200)
@@ -188,11 +217,16 @@ export const userController = {
         },
       });
 
+      if (!currentUser) {
+        return res.status(400).json({ message: "Couldn't find user." });
+      }
+
       const userInfo = {
-        id: currentUser?.id,
-        name: currentUser?.name,
-        email: currentUser?.email,
-        balance: currentUser?.balance,
+        id: currentUser.id,
+        name: currentUser.name,
+        email: currentUser.email,
+        balance: currentUser.balance,
+        isEmailVerified: currentUser.isEmailVerified,
       };
 
       return res
@@ -255,7 +289,7 @@ export const userController = {
 
         <br/>
 
-        <a href="http://127.0.0.1:5173/recover?code=${createdToken.token}">RESET PASSWORD</a>
+        <a href="${APP_URL}/recover?code=${createdToken.token}">RESET PASSWORD</a>
         `,
       });
 
@@ -319,7 +353,7 @@ export const userController = {
           .status(400)
           .json({ message: "Invalid password reset code." });
       }
-      
+
       if (
         new Date().getTime() >
         new Date(currentForgotPasswordToken?.createdAt).getTime() +
@@ -359,6 +393,132 @@ export const userController = {
       });
 
       return res.status(200).json({ message: "Password changed successfully" });
+    } catch (err: any) {
+      console.error(err);
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  async verifyEmail(req: Request, res: Response) {
+    try {
+      console.log("testandooadoasdoasdasd")
+
+      const { code } = req.query;
+
+      if (!code) {
+        return res
+          .status(400)
+          .json({ message: "Email verification code is missing." });
+      }
+
+      console.log("code", code)
+
+      // const userId = await prisma.verifyEmailToken.findFirst({
+      //   where: {
+      //     token: String(code),
+      //   },
+      // });
+
+      const currentVerifyEmailToken = await prisma.verifyEmailToken.findFirst({
+        where: {
+          token: String(code)
+        }
+      })
+
+      if(!currentVerifyEmailToken) {
+        return res.status(401).json({ message: "Invalid verify email token."})
+      }
+
+      const currentUser = await prisma.user.findFirst({
+        where: {
+          id: String(currentVerifyEmailToken.userId),
+        },
+      });
+
+      if (!currentUser) {
+        return res.status(400).json({ message: "Couldn't find user." });
+      }
+
+      console.log(currentUser)
+
+      await prisma.verifyEmailToken.deleteMany({
+        where: {
+          userId: currentUser.id,
+        },
+      });
+
+      await prisma.user.update({
+        where: {
+          id: currentUser.id,
+        },
+        data: {
+          isEmailVerified: true,
+        },
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Email has been verified successfully." });
+    } catch (err: any) {
+      console.error(err);
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  async newEmailValidationCode(req: Request, res: Response) {
+    try {
+      //@ts-ignore
+      const { id } = req.user;
+
+      if(!id) {
+        return res.status(401).json({ message: "User is not authenticated." })
+      }
+
+      const currentUser = await prisma.user.findFirst({ where: { id } });
+
+      if (!currentUser) {
+        return res
+          .status(401)
+          .json({ message: "Invalid user authentication." });
+      }
+
+      const code = crypto.randomBytes(32).toString("hex");
+
+      const newVerifyEmailToken = new VerifyEmailToken(code, id);
+
+      await prisma.verifyEmailToken.deleteMany({
+        where: {
+          userId: id
+        }
+      });
+
+      console.log(await prisma.verifyEmailToken.findMany({}))
+
+      await prisma.verifyEmailToken.create({
+        data: newVerifyEmailToken,
+      });
+
+      sendMail({
+        toEmail: currentUser.email,
+        emailSubject: "Verify your email",
+        emailHTML: `
+          <b>Hello, ${currentUser.name}</b>,
+
+          <br />
+
+          <p>
+            Welcome to Budget App! Before starting using our app, you need to verify your email, which can be done by clicking the link below:
+          </p>
+          
+          <br />
+
+          <a href="${APP_URL}/verify?code=${code}">Verify Email</a>
+        `,
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Email validation code updated." });
     } catch (err: any) {
       console.error(err);
       return res.status(500).json({ message: err.message });

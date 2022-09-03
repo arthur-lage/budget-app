@@ -1,5 +1,5 @@
-import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
 
@@ -8,7 +8,9 @@ export function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { handleSetToken } = useAuth();
+  const navigate = useNavigate();
+
+  const { currentUser, handleSetToken } = useAuth();
 
   async function handleForm(e: FormEvent) {
     e.preventDefault();
@@ -21,6 +23,12 @@ export function Register() {
 
     handleSetToken(res.data.token);
   }
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser]);
 
   return (
     <div>

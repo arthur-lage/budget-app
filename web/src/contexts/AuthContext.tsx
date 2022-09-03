@@ -39,11 +39,12 @@ export function AuthProvider({ children }: AuthProviderType) {
     handleSetCurrentUser(null);
     handleSetToken(null);
     localStorage.setItem("money-management:token", JSON.stringify(null));
+    window.location.href = "/login";
   }
 
   useEffect(() => {
     if (localStorage.getItem("money-management:token") !== null) {
-      setToken(
+      handleSetToken(
         JSON.parse(localStorage.getItem("money-management:token") as string)
       );
     }
@@ -54,14 +55,19 @@ export function AuthProvider({ children }: AuthProviderType) {
 
     //@ts-ignore
     api.defaults.headers.authorization = `Bearer ${token}`;
+    
+    console.log("fazendo req");
 
     api
       .get("/users/auth")
-      .then((res) => handleSetCurrentUser(res.data.user))
+      .then((res) => {
+        handleSetCurrentUser(res.data.user);
+      })
       .catch((err) => {
         console.error(err);
         handleSetCurrentUser(null);
         setToken(null);
+        localStorage.setItem("money-management:token", JSON.stringify(null));
       });
   }, [token]);
 
@@ -71,17 +77,17 @@ export function AuthProvider({ children }: AuthProviderType) {
       name: String(currentUser?.name),
       email: String(currentUser?.email),
       balance: Number(newBalance),
+      isEmailVerified: Boolean(currentUser?.isEmailVerified),
     };
 
     handleSetCurrentUser(newUser);
   }
 
   useEffect(() => {
-    if (currentUser) {
-      if (location.pathname === "/login" || location.pathname === "/register")
-        return navigate("/");
+    if (!currentUser && location.pathname != "/verify") {
+      return navigate("/login");
     }
-  }, [currentUser]);
+  }, []);
 
   const value = {
     token,

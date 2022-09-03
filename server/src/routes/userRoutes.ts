@@ -7,6 +7,8 @@ const userRoutes = Router();
 
 userRoutes.get("/auth", AuthMiddleware, userController.auth);
 
+userRoutes.get("/verify", userController.verifyEmail);
+
 userRoutes.get("/", AuthMiddleware, userController.getAll);
 
 userRoutes.get("/:id", userController.getById);
@@ -18,6 +20,8 @@ userRoutes.post("/login", userController.login);
 userRoutes.post("/forgot-password", userController.forgotPassword)
 
 userRoutes.post("/recover", userController.recoverPassword)
+
+userRoutes.patch("/new-email-validation-code", AuthMiddleware, userController.newEmailValidationCode);
 
 userRoutes.delete("/", userController.deleteAll);
 
