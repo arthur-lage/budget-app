@@ -2,7 +2,7 @@ import { api } from "../../services/api"
 
 export function NotVerified () {
   async function handleResendLink () {
-    const res = await api.patch("/new-email-validation-code")
+    const res = await api.patch("/users/new-email-validation-code")
 
     console.log("Email resent succesfully. Please check your inbox :).")
   }

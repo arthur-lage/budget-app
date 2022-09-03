@@ -7,11 +7,11 @@ const userRoutes = Router();
 
 userRoutes.get("/auth", AuthMiddleware, userController.auth);
 
+userRoutes.get("/verify", userController.verifyEmail);
+
 userRoutes.get("/", AuthMiddleware, userController.getAll);
 
 userRoutes.get("/:id", userController.getById);
-
-userRoutes.get("/verify", userController.verifyEmail);
 
 userRoutes.post("/", userController.create);
 

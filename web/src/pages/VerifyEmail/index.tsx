@@ -11,10 +11,10 @@ export function VerifyEmail() {
   useEffect(() => {
     async function verifyEmail() {
       try {
-        const res = await api.get("/verify?code=" + code);
+        const res = await api.get("/users/verify?code=" + code);
 
         // navigate("/");
-        console.log("success")
+        console.log("success", res)
       } catch (err) {
         console.error(err);
       }

@@ -401,6 +401,8 @@ export const userController = {
 
   async verifyEmail(req: Request, res: Response) {
     try {
+      console.log("testandooadoasdoasdasd")
+
       const { code } = req.query;
 
       if (!code) {
@@ -409,21 +411,35 @@ export const userController = {
           .json({ message: "Email verification code is missing." });
       }
 
-      const userId = await prisma.verifyEmailToken.findFirst({
+      console.log("code", code)
+
+      // const userId = await prisma.verifyEmailToken.findFirst({
+      //   where: {
+      //     token: String(code),
+      //   },
+      // });
+
+      const currentVerifyEmailToken = await prisma.verifyEmailToken.findFirst({
         where: {
-          token: String(code),
-        },
-      });
+          token: String(code)
+        }
+      })
+
+      if(!currentVerifyEmailToken) {
+        return res.status(401).json({ message: "Invalid verify email token."})
+      }
 
       const currentUser = await prisma.user.findFirst({
         where: {
-          id: String(userId),
+          id: String(currentVerifyEmailToken.userId),
         },
       });
 
       if (!currentUser) {
         return res.status(400).json({ message: "Couldn't find user." });
       }
+
+      console.log(currentUser)
 
       await prisma.verifyEmailToken.deleteMany({
         where: {
@@ -454,6 +470,10 @@ export const userController = {
       //@ts-ignore
       const { id } = req.user;
 
+      if(!id) {
+        return res.status(401).json({ message: "User is not authenticated." })
+      }
+
       const currentUser = await prisma.user.findFirst({ where: { id } });
 
       if (!currentUser) {
@@ -468,9 +488,11 @@ export const userController = {
 
       await prisma.verifyEmailToken.deleteMany({
         where: {
-          userId: id,
-        },
+          userId: id
+        }
       });
+
+      console.log(await prisma.verifyEmailToken.findMany({}))
 
       await prisma.verifyEmailToken.create({
         data: newVerifyEmailToken,

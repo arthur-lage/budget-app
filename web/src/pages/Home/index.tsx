@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
 import { NewOperationModal } from "../../components/NewOperationModal";
 import { PieChart } from "../../components/PieChart";
@@ -21,6 +22,8 @@ export function Home() {
     null
   );
   const [isNewOperationModalOpen, setIsNewOperationModalOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   function handleOpenNewOperationModal() {
     setIsNewOperationModalOpen(true);
@@ -68,8 +71,15 @@ export function Home() {
   }
 
   useEffect(() => {
+    if(currentUser && !currentUser.isEmailVerified) {
+      return navigate("/not-verified")
+    }
+  }, [])
+
+  useEffect(() => {
     async function fetchUserOperations() {
       try {
+        console.log("rerreraj")
         const res = await api.get("/operations");
 
         updateUserBalance(res.data.newBalance);

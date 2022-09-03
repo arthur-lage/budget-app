@@ -11,7 +11,6 @@ type AuthContextType = {
   handleSetCurrentUser: (newUser: IUser | null) => void;
   logout: () => void;
   updateUserBalance: (newBalance: number) => void;
-  isEmailVerified: boolean;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -23,7 +22,6 @@ type AuthProviderType = {
 export function AuthProvider({ children }: AuthProviderType) {
   const [token, setToken] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -41,11 +39,12 @@ export function AuthProvider({ children }: AuthProviderType) {
     handleSetCurrentUser(null);
     handleSetToken(null);
     localStorage.setItem("money-management:token", JSON.stringify(null));
+    window.location.href = "/login";
   }
 
   useEffect(() => {
     if (localStorage.getItem("money-management:token") !== null) {
-      setToken(
+      handleSetToken(
         JSON.parse(localStorage.getItem("money-management:token") as string)
       );
     }
@@ -56,20 +55,19 @@ export function AuthProvider({ children }: AuthProviderType) {
 
     //@ts-ignore
     api.defaults.headers.authorization = `Bearer ${token}`;
+    
+    console.log("fazendo req");
 
     api
       .get("/users/auth")
       .then((res) => {
         handleSetCurrentUser(res.data.user);
-
-        if (res.data.user.isEmailVerified) {
-          setIsEmailVerified(true);
-        }
       })
       .catch((err) => {
         console.error(err);
         handleSetCurrentUser(null);
         setToken(null);
+        localStorage.setItem("money-management:token", JSON.stringify(null));
       });
   }, [token]);
 
@@ -79,24 +77,17 @@ export function AuthProvider({ children }: AuthProviderType) {
       name: String(currentUser?.name),
       email: String(currentUser?.email),
       balance: Number(newBalance),
+      isEmailVerified: Boolean(currentUser?.isEmailVerified),
     };
 
     handleSetCurrentUser(newUser);
   }
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser && location.pathname != "/verify") {
       return navigate("/login");
     }
-
-    if (!isEmailVerified) {
-      return navigate("/not-verified");
-    }
-
-    if (location.pathname === "/login" || location.pathname === "/register") {
-      return navigate("/");
-    }
-  }, [currentUser, isEmailVerified]);
+  }, []);
 
   const value = {
     token,
@@ -105,7 +96,6 @@ export function AuthProvider({ children }: AuthProviderType) {
     handleSetCurrentUser,
     logout,
     updateUserBalance,
-    isEmailVerified,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
