@@ -88,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderType) {
 
   useEffect(() => {
     if (!currentUser && location.pathname != "/verify") {
-      return navigate("/login");
+      // return navigate("/login");
     }
   }, []);
 

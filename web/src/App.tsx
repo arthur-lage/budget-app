@@ -11,11 +11,15 @@ import { RecoverPassword } from "./pages/RecoverPassword";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { VerifyEmail } from "./pages/VerifyEmail";
 import { NotVerified } from "./pages/NotVerified";
+import { LandingPage } from "./pages/LandingPage";
+
+import "./styles/global.scss"
 
 export function App() {
   return (
     <Routes>
       <Route path="*" element={<NotFound />} />
+      <Route path="/lp" element={<LandingPage />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />

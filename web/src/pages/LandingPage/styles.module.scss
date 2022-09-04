@@ -1,0 +1,125 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: linear-gradient(to bottom, #fff, #e5fff9);
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2.7rem 6rem;
+    box-shadow: 0 4px 4px 4px rgba(0, 0, 0, 0.1);
+
+    .logo {
+      font-size: 4rem;
+      font-family: "League Spartan", sans-serif;
+      color: #444;
+      transition: 0.15s ease;
+
+      &:hover {
+        color: #000;
+      }
+    }
+
+    nav ul {
+      display: flex;
+      align-items: center;
+      gap: 5rem;
+      list-style: none;
+
+      .about,
+      .login,
+      .register {
+        font-family: "Lato", sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.8rem;
+        text-decoration: none;
+        transition: 0.15s ease;
+        cursor: pointer;
+        width: 16rem;
+        height: 6rem;
+      }
+
+      .about,
+      .login {
+        font-weight: 400;
+
+        &:hover {
+          color: #000;
+        }
+      }
+
+      .about {
+        color: #444;
+      }
+
+      .login,
+      .register {
+        border-radius: 50rem;
+      }
+
+      .login {
+        color: #222;
+        border: 2px solid #222;
+
+        &:hover {
+          border-color: #000;
+        }
+      }
+
+      .register {
+        color: #fff;
+        background: #0dca7a;
+        width: 24.2rem;
+        font-weight: 700;
+
+        &:hover {
+          filter: brightness(0.8);
+        }
+      }
+    }
+  }
+
+  main {
+    padding: 8rem 0 12rem 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .title {
+      font-family: "League Spartan", sans-serif;
+      font-size: 6.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .description {
+      margin-bottom: 9rem;
+      font-size: 3.2rem;
+      font-family: "Lato", sans-serif;
+      color: #666;
+    }
+
+    .getStarted {
+      margin-top: 9rem;
+      color: #fff;
+      background-color: #11da92;
+      border-radius: 50rem;
+      height: 8rem;
+      width: 42rem;
+      font-family: "Lato", sans-serif;
+      font-weight: 700;
+      font-size: 3.6rem;
+      cursor: pointer;
+      border: 0;
+      box-shadow: 0px 0px 2.5px 2.5px rgba(0, 0, 0, 0.1);
+      transition: 0.15s ease;
+
+      &:hover {
+        filter: brightness(0.8);
+      }
+    }
+  }
+}

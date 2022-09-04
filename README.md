@@ -1,4 +1,4 @@
-# budget-app
+# Budget
 
 ## ✉ About
 
@@ -6,13 +6,11 @@ A easy-to-use fullstack app where you can keep track of your personal finances.
 
 ## 🌆 Images
 
-
-
 ## 🎨 Figma Design
 
 If you wish to see the application design on figma, click the link below:
 
-[Figma Design](https://www.figma.com/file/9RultGXpHEp3qEIPg4dRmW/Budget-App)
+[Figma Design](https://www.figma.com/file/9RultGXpHEp3qEIPg4dRmW/Budget)
 
 ## ⚠ Requirements
 
