@@ -79,7 +79,6 @@ export function Home() {
   useEffect(() => {
     async function fetchUserOperations() {
       try {
-        console.log("rerreraj")
         const res = await api.get("/operations");
 
         updateUserBalance(res.data.newBalance);

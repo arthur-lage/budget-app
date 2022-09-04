@@ -11,6 +11,7 @@ type AuthContextType = {
   handleSetCurrentUser: (newUser: IUser | null) => void;
   logout: () => void;
   updateUserBalance: (newBalance: number) => void;
+  checkUserAuth: () => void;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -27,7 +28,7 @@ export function AuthProvider({ children }: AuthProviderType) {
   const navigate = useNavigate();
 
   function handleSetToken(newToken: string | null) {
-    localStorage.setItem("money-management:token", JSON.stringify(newToken));
+    localStorage.setItem("budget-app:token", JSON.stringify(newToken));
     setToken(newToken);
   }
 
@@ -38,14 +39,14 @@ export function AuthProvider({ children }: AuthProviderType) {
   function logout() {
     handleSetCurrentUser(null);
     handleSetToken(null);
-    localStorage.setItem("money-management:token", JSON.stringify(null));
+    localStorage.setItem("budget-app:token", JSON.stringify(null));
     window.location.href = "/login";
   }
 
-  useEffect(() => {
-    if (localStorage.getItem("money-management:token") !== null) {
+  async function checkUserAuth() {
+    if (localStorage.getItem("budget-app:token") !== null) {
       handleSetToken(
-        JSON.parse(localStorage.getItem("money-management:token") as string)
+        JSON.parse(localStorage.getItem("budget-app:token") as string)
       );
     }
 
@@ -55,7 +56,7 @@ export function AuthProvider({ children }: AuthProviderType) {
 
     //@ts-ignore
     api.defaults.headers.authorization = `Bearer ${token}`;
-    
+
     api
       .get("/users/auth")
       .then((res) => {
@@ -65,8 +66,12 @@ export function AuthProvider({ children }: AuthProviderType) {
         console.error(err);
         handleSetCurrentUser(null);
         setToken(null);
-        localStorage.setItem("money-management:token", JSON.stringify(null));
+        localStorage.setItem("budget-app:token", JSON.stringify(null));
       });
+  }
+
+  useEffect(() => {
+    checkUserAuth();
   }, [token]);
 
   function updateUserBalance(newBalance: number) {
@@ -94,6 +99,7 @@ export function AuthProvider({ children }: AuthProviderType) {
     handleSetCurrentUser,
     logout,
     updateUserBalance,
+    checkUserAuth,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
