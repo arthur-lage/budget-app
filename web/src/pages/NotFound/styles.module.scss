@@ -1,0 +1,104 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  main {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5rem;
+
+    .image {
+      width: 50.2rem;
+      height: 33.3rem;
+      margin-bottom: 8rem;
+      margin-top: 7.2rem;
+
+      @media screen and (max-width: 1366px) {
+        width: 35rem;
+        height: auto;
+      }
+
+      @media screen and (max-width: 600px) {
+        width: 80vw;
+      }
+
+      @media screen and (max-width: 450px) {
+        margin-top: 3rem;
+        margin-bottom: 4.5rem;
+      }
+    }
+
+    .title {
+      font-family: "League Spartan", sans-serif;
+      font-weight: 700;
+      color: #333;
+      font-size: 6.4rem;
+      margin-bottom: 5rem;
+
+      @media screen and (max-width: 1366px) {
+        font-size: 4.8rem;
+      }
+
+      @media screen and (max-width: 540px) {
+        font-size: 5.8rem;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 400px) {
+        font-size: 4.8rem;
+      }
+    }
+
+    .description {
+      font-family: "Lato", sans-serif;
+      font-weight: 500;
+      color: #333;
+      font-size: 3.6rem;
+      margin-bottom: 5rem;
+      padding: 0 1.5rem;
+
+      @media screen and (max-width: 1366px) {
+        font-size: 3rem;
+      }
+
+      @media screen and (max-width: 540px) {
+        font-size: 3rem;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 400px) {
+        font-size: 2.6rem;
+      }
+    }
+
+    .link {
+      font-family: "Lato", sans-serif;
+      font-weight: 500;
+      font-size: 3.6rem;
+      cursor: pointer;
+      color: #1a70bf;
+      transition: 0.15s ease;
+
+      &:hover {
+        filter: brightness(0.85);
+        text-decoration: underline;
+      }
+
+      @media screen and (max-width: 1366px) {
+        font-size: 3rem;
+      }
+
+      @media screen and (max-width: 540px) {
+        font-size: 2.8rem;
+        text-align: center;
+      }
+
+      @media screen and (max-width: 400px) {
+        font-size: 2.4rem;
+      }
+    }
+  }
+}

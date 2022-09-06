@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
 import { FormEvent, useEffect, useState } from "react";
+import { Header } from "../../components/Header";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -30,6 +31,8 @@ export function Login() {
 
   return (
     <div>
+      <Header/>
+
       <h1>Login</h1>
 
       <form onSubmit={handleForm}>

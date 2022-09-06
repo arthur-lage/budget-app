@@ -1,14 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
+import { PrivateRoute } from "./components/PrivateRoute";
+
 import { NotFound } from "./pages/NotFound";
 import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 import { Home } from "./pages/Home";
 import { ForgotPassword } from "./pages/ForgotPassword";
 import { RecoverPassword } from "./pages/RecoverPassword";
-
-import { PrivateRoute } from "./components/PrivateRoute";
 import { VerifyEmail } from "./pages/VerifyEmail";
 import { NotVerified } from "./pages/NotVerified";
 import { LandingPage } from "./pages/LandingPage";
