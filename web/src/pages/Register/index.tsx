@@ -1,7 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Header } from "../../components/Header";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
+
+import styles from "./styles.module.scss";
 
 export function Register() {
   const [name, setName] = useState("");
@@ -31,44 +34,61 @@ export function Register() {
   }, [currentUser]);
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className={styles.container}>
+      <Header />
 
-      <form onSubmit={handleForm}>
-        <div className="inputField">
-          <label htmlFor="name">Name</label>
+      <h1 className={styles.title}>Register</h1>
+
+      <form className={styles.form} onSubmit={handleForm}>
+        <div className={styles.inputField}>
           <input
+            className={styles.inputBox}
             value={name}
             onChange={(e) => setName(e.target.value)}
             type="name"
             id="name"
-            placeholder="Your name"
+            placeholder=" "
           />
+          <label className={styles.inputLabel} htmlFor="name">
+            Name
+          </label>
         </div>
-        <div className="inputField">
-          <label htmlFor="email">Email</label>
+        <div className={styles.inputField}>
           <input
+            className={styles.inputBox}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             id="email"
-            placeholder="Your email. eg: example@mail.com"
+            placeholder=" "
           />
+          <label className={styles.inputLabel} htmlFor="email">
+            Email
+          </label>
         </div>
-        <div className="inputField">
-          <label htmlFor="password">Password</label>
+        <div className={styles.inputField}>
           <input
+            className={styles.inputBox}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             id="password"
-            placeholder="Your password"
+            placeholder=" "
           />
-        </div>
-        <button type="submit">Register</button>
-      </form>
 
-      <Link to="/login">Already have an account? Login</Link>
+          <label className={styles.inputLabel} htmlFor="password">
+            Password
+          </label>
+        </div>
+
+        <Link className={styles.loginLink} to="/login">
+          Already have an account? Login
+        </Link>
+
+        <button className={styles.registerButton} type="submit">
+          Register
+        </button>
+      </form>
     </div>
   );
 }
