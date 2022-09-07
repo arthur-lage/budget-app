@@ -14,6 +14,7 @@ import { NotVerified } from "./pages/NotVerified";
 import { LandingPage } from "./pages/LandingPage";
 
 import "./styles/global.scss"
+import { About } from "./pages/About";
 
 export function App() {
   return (
@@ -24,6 +25,7 @@ export function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/recover" element={<RecoverPassword />} />
+      <Route path="/about" element={<About />} />
 
       <Route
         path="/"

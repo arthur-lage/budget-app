@@ -1,0 +1,116 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  main {
+    display: flex;
+    flex-direction: column;
+    margin-top: 9.5rem;
+
+    .title {
+      color: #333;
+      font-weight: 400;
+      font-family: "League Spartan", sans-serif;
+      margin-bottom: 6rem;
+      font-size: 6.4rem;
+      align-self: center;
+    }
+
+    p {
+      align-self: center;
+      margin-bottom: 1.5rem;
+      font-size: 3.6rem;
+      font-family: "Lato", sans-serif;
+      color: #222;
+
+      a {
+        color: #1a70bf;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .technologiesSection {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      .technologiesTitle {
+        font-size: 3.6rem;
+        font-family: "Lato", sans-serif;
+        color: #222;
+        font-weight: 400;
+      }
+
+      .technologyRowWrapper {
+        margin-top: 6rem;
+
+        .technologyRowTitle {
+          font-weight: 500;
+          font-family: "League Spartan", sans-serif;
+          font-size: 5.2rem;
+          align-self: center;
+          text-align: center;
+          margin-bottom: 6rem;
+          text-transform: uppercase;
+          color: #333;
+        }
+
+        .technologyRow {
+          display: flex;
+          align-items: center;
+          gap: 2.5rem;
+
+          .technology {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+
+            .technologyImage {
+              width: 12.8rem;
+              height: 12.8rem;
+              filter: grayscale(.75);
+              transition: 0.2s ease;
+            }
+
+            &:hover {
+              .technologyImage {
+                transform: scale(1.05);
+                filter: grayscale(0);
+              }
+
+              .technologyName {
+                opacity: 1;
+                visibility: visible;
+              }
+            }
+
+            .technologyName {
+              opacity: 0;
+              visibility: hidden;
+              pointer-events: none;
+              transition: 0.15s ease;
+              font-size: 2.4rem;
+              color: #222;
+              margin: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  footer {
+    text-align: center;
+    font-family: "League Spartan", sans-serif;
+    font-size: 3.6rem;
+    padding-bottom: 7.5rem;
+    font-weight: 500;
+    color: #444;
+  }
+}
