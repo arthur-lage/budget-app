@@ -15,6 +15,11 @@
       margin-bottom: 6rem;
       font-size: 6.4rem;
       align-self: center;
+
+      @media screen and (max-width: 768px) {
+        font-size: 4.8rem;
+        margin-bottom: 3.5rem;
+      }
     }
 
     p {
@@ -23,6 +28,12 @@
       font-size: 3.6rem;
       font-family: "Lato", sans-serif;
       color: #222;
+      text-align: center;
+      padding: 0 1rem;
+
+      @media screen and (max-width: 768px) {
+        font-size: 2.4rem;
+      }
 
       a {
         color: #1a70bf;
@@ -44,6 +55,10 @@
         font-family: "Lato", sans-serif;
         color: #222;
         font-weight: 400;
+
+        @media screen and (max-width: 768px) {
+          font-size: 2.4rem;
+        }
       }
 
       .technologyRowWrapper {
@@ -58,12 +73,31 @@
           margin-bottom: 6rem;
           text-transform: uppercase;
           color: #333;
+
+          @media screen and (max-width: 768px) {
+            font-size: 3.6rem;
+          }
         }
 
         .technologyRow {
           display: flex;
           align-items: center;
           gap: 2.5rem;
+
+          @media screen and (max-width: 930px) {
+            gap: 1.25rem;
+          }
+
+          @media screen and (max-width: 768px) {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+
+          @media screen and (max-width: 500px) {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+          }
 
           .technology {
             display: flex;
@@ -74,8 +108,19 @@
             .technologyImage {
               width: 12.8rem;
               height: 12.8rem;
-              filter: grayscale(.75);
+              filter: grayscale(0.75);
               transition: 0.2s ease;
+
+              @media screen and (max-width: 930px) {
+                width: 9.6rem;
+                height: 9.6rem;
+                filter: grayscale(0);
+              }
+
+              @media screen and (max-width: 500px) {
+                width: 12.8rem;
+                height: 12.8rem;
+              }
             }
 
             &:hover {

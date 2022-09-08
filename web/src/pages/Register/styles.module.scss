@@ -15,6 +15,10 @@
       margin-top: 6.5rem;
       font-size: 4.8rem;
     }
+
+    @media screen and (max-width: 425px) {
+      font-size: 3.2rem;
+    }
   }
 
   .form {
@@ -40,6 +44,10 @@
         height: 6rem;
       }
 
+      @media screen and (max-width: 768px) {
+        width: 80vw;
+      }
+
       &.emailInput {
         margin-bottom: 7rem;
 
@@ -62,6 +70,11 @@
 
         @media screen and (max-width: 1366px) {
           font-size: 1.8rem;
+        }
+
+        @media screen and (max-width: 425px) {
+          left: 1.25rem;
+          font-size: 1.7rem;
         }
       }
 
@@ -89,6 +102,12 @@
         @media screen and (max-width: 1366px) {
           font-size: 1.8rem;
           padding-left: 2.5rem;
+        }
+
+        @media screen and (max-width: 425px) {
+          padding-left: 1.25rem;
+          padding-right: 1.25rem;
+          font-size: 1.7rem;
         }
       }
 
@@ -121,6 +140,14 @@
       @media screen and (max-width: 1366px) {
         font-size: 2.2rem;
       }
+
+      @media screen and (max-width: 425px) {
+        font-size: 1.8rem;
+      }
+
+      @media screen and (max-width: 350px) {
+        font-size: 1.45rem;
+      }
     }
 
     .registerButton {
@@ -145,6 +172,10 @@
         font-size: 2.6rem;
         width: 32rem;
         height: 5rem;
+      }
+
+      @media screen and (max-width: 425px) {
+        width: 80vw;
       }
     }
   }
