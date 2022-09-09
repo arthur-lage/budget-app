@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { Loading } from "../../components/Loading";
 import { NewOperationModal } from "../../components/NewOperationModal";
 import { PieChart } from "../../components/PieChart";
+import { Header } from '../../components/Header/index';
+
 import { useAuth } from "../../hooks/useAuth";
+
 import { IOperation } from "../../interfaces/IOperation";
+
 import { api } from "../../services/api";
 
+import styles from './styles.module.scss'
+
 export function Home() {
-  const { currentUser, updateUserBalance, logout } = useAuth();
+  const { currentUser, updateUserBalance } = useAuth();
 
   const [loading, setLoading] = useState(true);
 
@@ -132,11 +139,8 @@ export function Home() {
   }, [userOperations]);
 
   return (
-    <div>
-      <header>
-        <h1>Home</h1>
-        <button onClick={logout}>Log Out</button>
-      </header>
+    <div className={styles.container}>
+      <Header />
 
       {loading ? (
         <Loading />

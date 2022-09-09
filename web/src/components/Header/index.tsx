@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import styles from "./styles.module.scss";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { currentUser, logout } = useAuth();
 
   return (
     <header>
@@ -26,16 +29,26 @@ export function Header() {
               About
             </Link>
           </li>
-          <li>
-            <Link className={styles.login} to="/login">
-              Login
-            </Link>
-          </li>
-          <li>
-            <Link className={styles.register} to="/register">
-              Get Started
-            </Link>
-          </li>
+          {currentUser ? (
+            <li>
+              <button onClick={logout} className={styles.logout}>
+                Logout
+              </button>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link className={styles.login} to="/login">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link className={styles.register} to="/register">
+                  Get Started
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </header>

@@ -71,7 +71,8 @@ header {
     }
 
     .login,
-    .register {
+    .register,
+    .logout {
       border-radius: 50rem;
     }
 
@@ -89,6 +90,29 @@ header {
       background: #0dca7a;
       width: 24.2rem;
       font-weight: 700;
+
+      &:hover {
+        filter: brightness(0.8);
+      }
+    }
+    
+    .logout {
+      color: #fff;
+      border: 0;
+      cursor: pointer;
+      height: 4rem;
+      width: 12.5rem;
+      font-size: 2rem;
+      transition: .15s ease;
+      background: #da0f31;
+      font-family: "Lato", sans-serif;
+      font-weight: 700;
+
+      @media screen and (max-width: 768px) {
+        height: 5.5rem;
+      width: 18rem;
+      font-size: 2.8rem;
+      }
 
       &:hover {
         filter: brightness(0.8);

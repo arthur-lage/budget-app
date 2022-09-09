@@ -1,6 +1,9 @@
 import { useEffect } from "react";
+import { Header } from "../../components/Header";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
+
+import styles from "./styles.module.scss";
 
 export function NotVerified() {
   const { currentUser, checkUserAuth } = useAuth();
@@ -20,15 +23,25 @@ export function NotVerified() {
   }, [currentUser]);
 
   return (
-    <div>
-      <h1>You email is not verified yet!</h1>
+    <div className={styles.container}>
+      <Header />
 
-      <p>
-        If you didn't receive the activation link in your email, click the
-        button below
-      </p>
+      <main>
+        <h1 className={styles.title}>Your email is not verified yet!</h1>
 
-      <button onClick={handleResendLink}>Resend Link</button>
+        <p className={styles.description}>
+          If you didn't receive the activation link in your email, click the
+          button below
+        </p>
+
+        <button
+          className={styles.resendLink}
+          type="button"
+          onClick={handleResendLink}
+        >
+          Resend Link
+        </button>
+      </main>
     </div>
   );
 }

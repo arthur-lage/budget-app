@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Header } from "../../components/Header";
+import { InputField } from "../../components/InputField";
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
 
@@ -40,46 +41,28 @@ export function Register() {
       <h1 className={styles.title}>Register</h1>
 
       <form className={styles.form} onSubmit={handleForm}>
-        <div className={styles.inputField}>
-          <input
-            className={styles.inputBox}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            type="name"
-            id="name"
-            placeholder=" "
-          />
-          <label className={styles.inputLabel} htmlFor="name">
-            Name
-          </label>
-        </div>
-        <div className={styles.inputField}>
-          <input
-            className={styles.inputBox}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            id="email"
-            placeholder=" "
-          />
-          <label className={styles.inputLabel} htmlFor="email">
-            Email
-          </label>
-        </div>
-        <div className={styles.inputField}>
-          <input
-            className={styles.inputBox}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            id="password"
-            placeholder=" "
-          />
-
-          <label className={styles.inputLabel} htmlFor="password">
-            Password
-          </label>
-        </div>
+        <InputField
+          inputId="name"
+          inputType="text"
+          labelText="name"
+          valueState={name}
+          setValueState={setName}
+        />
+        <InputField
+          // className={}
+          inputId="email"
+          inputType="email"
+          labelText="Email"
+          valueState={email}
+          setValueState={setEmail}
+        />
+        <InputField
+          inputId="password"
+          inputType="password"
+          labelText="Password"
+          valueState={password}
+          setValueState={setPassword}
+        />
 
         <Link className={styles.loginLink} to="/login">
           Already have an account? Login

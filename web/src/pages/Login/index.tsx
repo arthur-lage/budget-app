@@ -8,6 +8,7 @@ import { api } from "../../services/api";
 import { Header } from "../../components/Header";
 
 import styles from "./styles.module.scss";
+import { InputField } from "../../components/InputField";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -41,33 +42,21 @@ export function Login() {
       <h1 className={styles.title}>Login</h1>
 
       <form className={styles.form} onSubmit={handleForm}>
-        <div className={`${styles.inputField} ${styles.emailInput}`}>
-          <input
-            className={styles.inputBox}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            type="email"
-            id="email"
-            placeholder=" "
-          />
-          <label className={styles.inputLabel} htmlFor="email">
-            Email
-          </label>
-        </div>
-        <div className={styles.inputField}>
-          <input
-            className={styles.inputBox}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            id="password"
-            placeholder=" "
-          />
-          <label className={styles.inputLabel} htmlFor="password">
-            Password
-          </label>
-        </div>
-        
+        <InputField
+          inputId="email"
+          inputType="email"
+          labelText="Email"
+          valueState={email}
+          setValueState={setEmail}
+        />
+        <InputField
+          inputId="password"
+          inputType="password"
+          labelText="Password"
+          valueState={password}
+          setValueState={setPassword}
+        />
+
         <div className={styles.links}>
           <Link className={styles.forgotPassword} to="/forgot-password">
             Forgot your password? Click here
