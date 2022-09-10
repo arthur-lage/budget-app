@@ -18,9 +18,9 @@ export function NotVerified() {
     checkUserAuth();
 
     if (currentUser?.isEmailVerified) {
-      window.location.href = "/";
+      window.location.href = "/"
     }
-  }, [currentUser]);
+  }, []);
 
   return (
     <div className={styles.container}>

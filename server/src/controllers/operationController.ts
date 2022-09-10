@@ -54,15 +54,11 @@ export const operationController = {
 
       const currentBalance = currentUser.balance;
 
-      console.log("old balance" + currentBalance);
-
       if (type == "expense") {
         newBalance = currentBalance - amount;
       } else if (type == "income") {
         newBalance = currentBalance + amount;
       }
-
-      console.log("new balance" + newBalance);
 
       const convertedDate = new Date(date);
 
@@ -72,8 +68,6 @@ export const operationController = {
         data: newOperation,
       });
 
-      console.log("before update balance");
-
       await prisma.user.update({
         where: {
           id: id,
@@ -82,8 +76,6 @@ export const operationController = {
           balance: newBalance,
         },
       });
-
-      console.log("after update balance");
 
       return res.status(200).json({
         newBalance,

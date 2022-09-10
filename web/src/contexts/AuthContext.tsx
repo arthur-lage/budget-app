@@ -86,12 +86,6 @@ export function AuthProvider({ children }: AuthProviderType) {
     handleSetCurrentUser(newUser);
   }
 
-  useEffect(() => {
-    if (!currentUser && location.pathname != "/verify") {
-      // return navigate("/login");
-    }
-  }, []);
-
   const value = {
     token,
     handleSetToken,

@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { Header } from "../../components/Header";
 import { InputField } from "../../components/InputField";
@@ -31,9 +31,21 @@ export function RecoverPassword() {
     }
   }
 
-  function goToLogin () {
-    navigate("/login")
+  function goToLogin() {
+    navigate("/login");
   }
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        await api.get("/users/check-recover-password-token?code=" + code);
+      } catch (err: any) {
+        return navigate("/forgot-password");
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -47,7 +59,11 @@ export function RecoverPassword() {
             Your password has been updated succesfully!
           </p>
 
-          <button className={styles.goToLogin} type="button" onClick={goToLogin}>
+          <button
+            className={styles.goToLogin}
+            type="button"
+            onClick={goToLogin}
+          >
             Login
           </button>
         </main>

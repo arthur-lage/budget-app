@@ -392,6 +392,8 @@ export const userController = {
         },
       });
 
+      await prisma.forgotPasswordToken.deleteMany({});
+
       return res.status(200).json({ message: "Password changed successfully" });
     } catch (err: any) {
       console.error(err);
@@ -401,7 +403,7 @@ export const userController = {
 
   async verifyEmail(req: Request, res: Response) {
     try {
-      console.log("testandooadoasdoasdasd")
+      console.log("testandooadoasdoasdasd");
 
       const { code } = req.query;
 
@@ -411,7 +413,7 @@ export const userController = {
           .json({ message: "Email verification code is missing." });
       }
 
-      console.log("code", code)
+      console.log("code", code);
 
       // const userId = await prisma.verifyEmailToken.findFirst({
       //   where: {
@@ -421,12 +423,12 @@ export const userController = {
 
       const currentVerifyEmailToken = await prisma.verifyEmailToken.findFirst({
         where: {
-          token: String(code)
-        }
-      })
+          token: String(code),
+        },
+      });
 
-      if(!currentVerifyEmailToken) {
-        return res.status(401).json({ message: "Invalid verify email token."})
+      if (!currentVerifyEmailToken) {
+        return res.status(401).json({ message: "Invalid verify email token." });
       }
 
       const currentUser = await prisma.user.findFirst({
@@ -439,7 +441,7 @@ export const userController = {
         return res.status(400).json({ message: "Couldn't find user." });
       }
 
-      console.log(currentUser)
+      console.log(currentUser);
 
       await prisma.verifyEmailToken.deleteMany({
         where: {
@@ -470,8 +472,8 @@ export const userController = {
       //@ts-ignore
       const { id } = req.user;
 
-      if(!id) {
-        return res.status(401).json({ message: "User is not authenticated." })
+      if (!id) {
+        return res.status(401).json({ message: "User is not authenticated." });
       }
 
       const currentUser = await prisma.user.findFirst({ where: { id } });
@@ -488,11 +490,11 @@ export const userController = {
 
       await prisma.verifyEmailToken.deleteMany({
         where: {
-          userId: id
-        }
+          userId: id,
+        },
       });
 
-      console.log(await prisma.verifyEmailToken.findMany({}))
+      console.log(await prisma.verifyEmailToken.findMany({}));
 
       await prisma.verifyEmailToken.create({
         data: newVerifyEmailToken,
@@ -519,6 +521,35 @@ export const userController = {
       return res
         .status(200)
         .json({ message: "Email validation code updated." });
+    } catch (err: any) {
+      console.error(err);
+      return res.status(500).json({ message: err.message });
+    }
+  },
+
+  async validateRecoverPasswordToken(req: Request, res: Response) {    
+    try {
+      const { code } = req.query;
+
+      if (!code) {
+        return res.status(400).json({
+          message: "Invalid password reset code.",
+        });
+      }
+
+      const currentToken = await prisma.forgotPasswordToken.findFirst({
+        where: {
+          token: String(code),
+        },
+      });
+
+      if (!currentToken) {
+        return res
+          .status(400)
+          .json({ message: "Invalid password recovery token." });
+      }
+
+      return res.status(200).json({ message: "Token is valid." });
     } catch (err: any) {
       console.error(err);
       return res.status(500).json({ message: err.message });
