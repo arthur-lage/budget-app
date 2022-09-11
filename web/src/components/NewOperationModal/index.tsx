@@ -23,6 +23,13 @@ export function NewOperationModal({
       amount: Number(operationAmount),
       date: new Date(operationDate),
     });
+
+    setOperationName("");
+    setOperationType("income")
+    setOperationAmount(0);
+    setOperationDate("");
+
+    handleCloseNewOperationModal();
   }
 
   return (

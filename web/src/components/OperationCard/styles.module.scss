@@ -1,0 +1,82 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 13.5rem;
+  background: #ffffffcc;
+  border-radius: 2rem;
+  padding: 3.4rem 3rem;
+
+  .information {
+    display: flex;
+    align-items: center;
+
+    .left {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .operationName {
+        font-family: "Lato", sans-serif;
+        font-weight: 600;
+        font-size: 3.2rem;
+      }
+    }
+
+    .right {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      margin-left: 4rem;
+
+      .property {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        font-family: "Lato", sans-serif;
+        font-weight: 600;
+        font-size: 3.2rem;
+
+        .propertyTitle {
+          color: #444;
+        }
+
+        .propertyValue {
+          color: #222;
+        }
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+
+    .detailsButton,
+    .deleteButton {
+      width: 6.5rem;
+      height: 6.5rem;
+      border-radius: 1rem;
+      padding: 0.7rem;
+      opacity: 0.6;
+      transition: 0.15s ease-out;
+      border: 0;
+      outline: 0;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .detailsButton {
+      background: #222;
+    }
+
+    .deleteButton {
+      background: #f22144;
+    }
+  }
+}

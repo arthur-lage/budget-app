@@ -15,7 +15,10 @@ import { api } from "../../services/api";
 import styles from "./styles.module.scss";
 
 import OrderByIcon from "../../assets/order-by-icon.svg";
+
 import { formatter } from "../../utils/currencyFormater";
+import { OperationCard } from "../../components/OperationCard";
+import { OperationList } from "../../components/OperationList";
 
 export function Home() {
   const { currentUser, updateUserBalance } = useAuth();
@@ -55,21 +58,6 @@ export function Home() {
 
     //@ts-ignore
     setUserOperations((prev) => [...prev, res.data.operation]);
-  }
-
-  async function deleteOperation(operationId: string) {
-    const res = await api.delete("/operations/" + operationId);
-
-    let newUserOperationsList =
-      userOperations && userOperations?.length > 1
-        ? userOperations?.filter(
-            (userOperation) => userOperation.id != operationId
-          )
-        : [];
-
-    updateUserBalance(res.data.newBalance);
-
-    setUserOperations(newUserOperationsList);
   }
 
   async function handleDeleteAllOperations() {
@@ -162,7 +150,10 @@ export function Home() {
                     {formatter.format(Math.abs(Number(currentUser?.balance)))}
                   </b>
                 </p>
-                <button onClick={handleDeleteAllOperations} className={styles.clearOperations}>
+                <button
+                  onClick={handleDeleteAllOperations}
+                  className={styles.clearOperations}
+                >
                   Clear operations
                 </button>
               </div>
@@ -172,7 +163,12 @@ export function Home() {
                 Order by
                 <img src={OrderByIcon} alt="Arrows pointing up and down" />
               </button>
-              <button className={styles.newOperation}>New operation</button>
+              <button
+                onClick={handleOpenNewOperationModal}
+                className={styles.newOperation}
+              >
+                New operation
+              </button>
             </section>
           </section>
 
@@ -185,34 +181,17 @@ export function Home() {
             />
           )} */}
 
-          <div className="operations">
-            <h2>Operations</h2>
-            {userOperations && userOperations.length > 0 ? (
-              <>
-                {/* @ts-ignore */}
-                {userOperations.map((userOperation) => (
-                  <div key={userOperation.id}>
-                    <p>Name: {userOperation?.name}</p>
-                    <p>R${userOperation?.amount}</p>
-                    {/* @ts-ignore */}
-                    <p>Date: {String(userOperation?.date)}</p>
-                    <p>Type: {userOperation?.type}</p>
-                    <button onClick={() => deleteOperation(userOperation.id)}>
-                      Delete Operation
-                    </button>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <h2>NO OPERATIONS FOUND</h2>
-            )}
-            <button
-              onClick={handleOpenNewOperationModal}
-              className="new-operation"
-            >
-              New operation
-            </button>
-          </div>
+          <section
+            className={`${styles.operations} ${
+              userOperations && userOperations.length == 0 ? styles.empty : ""
+            }`}
+          >
+            <OperationList
+              setUserOperations={setUserOperations}
+              updateUserBalance={updateUserBalance}
+              userOperations={userOperations}
+            />
+          </section>
 
           {isNewOperationModalOpen && (
             <NewOperationModal

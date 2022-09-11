@@ -5,4 +5,5 @@ export interface IOperation {
   amount: number;
   date: Date;
   userId: string;
+  createdAt: Date;
 }
