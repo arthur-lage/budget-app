@@ -1,16 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import SettingsIcon from "../../assets/settings-icon.svg";
+
 import styles from "./styles.module.scss";
 import { useAuth } from "../../hooks/useAuth";
 
-export function Header() {
+type Props = {
+  isLight: boolean
+}
+
+export function Header({ isLight = false }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { currentUser, logout } = useAuth();
 
+  async function handleSettings () {
+    console.log("settings")
+  }
+
   return (
-    <header>
+    <header className={`${isLight ? styles.light : ""}`}>
       <Link className={styles.logo} to="/">
         Budget
       </Link>
@@ -24,6 +34,11 @@ export function Header() {
       </div>
       <nav>
         <ul>
+          {currentUser && (
+            <button className={styles.settingsButton} onClick={handleSettings}>
+              <img src={SettingsIcon} alt="Settings icon" />
+            </button>
+          )}
           <li>
             <Link className={styles.about} to="/about">
               About

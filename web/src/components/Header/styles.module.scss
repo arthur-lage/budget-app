@@ -3,7 +3,20 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 2.7rem 6rem;
-  box-shadow: 0 4px 4px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 4px 0px rgba(0, 0, 0, 0.25);
+  background: #ffffff33;
+  backdrop-filter: blur(4px);
+
+  &.light {
+    .logo,
+    .about {
+      color: rgba(255, 255, 255, 0.8);
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
 
   @media screen and (min-width: 1120px) {
     padding: 1.25rem 6rem;
@@ -36,6 +49,27 @@ header {
 
     @media screen and (max-width: 940px) {
       gap: 2.5rem;
+    }
+
+    .settingsButton {
+      background: transparent;
+      cursor: pointer;
+      border: 0;
+
+      img {
+        transition: 0.25s ease-out;
+
+        @media screen and (max-width: 1366px) {
+          width: 4.2rem;
+          height: 4.2rem;
+        }
+      }
+
+      &:hover {
+        img {
+          transform: rotate(90deg);
+        }
+      }
     }
 
     .about,
@@ -95,7 +129,7 @@ header {
         filter: brightness(0.8);
       }
     }
-    
+
     .logout {
       color: #fff;
       border: 0;
@@ -103,15 +137,15 @@ header {
       height: 4rem;
       width: 12.5rem;
       font-size: 2rem;
-      transition: .15s ease;
+      transition: 0.15s ease;
       background: #da0f31;
       font-family: "Lato", sans-serif;
       font-weight: 700;
 
       @media screen and (max-width: 768px) {
         height: 5.5rem;
-      width: 18rem;
-      font-size: 2.8rem;
+        width: 18rem;
+        font-size: 2.8rem;
       }
 
       &:hover {

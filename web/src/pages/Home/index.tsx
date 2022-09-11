@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/Loading";
 import { NewOperationModal } from "../../components/NewOperationModal";
 import { PieChart } from "../../components/PieChart";
-import { Header } from '../../components/Header/index';
+import { Header } from "../../components/Header/index";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -12,7 +12,10 @@ import { IOperation } from "../../interfaces/IOperation";
 
 import { api } from "../../services/api";
 
-import styles from './styles.module.scss'
+import styles from "./styles.module.scss";
+
+import OrderByIcon from "../../assets/order-by-icon.svg";
+import { formatter } from "../../utils/currencyFormater";
 
 export function Home() {
   const { currentUser, updateUserBalance } = useAuth();
@@ -78,10 +81,10 @@ export function Home() {
   }
 
   useEffect(() => {
-    if(currentUser && !currentUser.isEmailVerified) {
-      return navigate("/not-verified")
+    if (currentUser && !currentUser.isEmailVerified) {
+      return navigate("/not-verified");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     async function fetchUserOperations() {
@@ -140,28 +143,49 @@ export function Home() {
 
   return (
     <div className={styles.container}>
-      <Header />
+      <Header isLight />
 
       {loading ? (
         <Loading />
       ) : (
         <main>
-          <h2>Hello, {currentUser?.name}</h2>
-          <h3>Current balance: {currentUser?.balance}</h3>
+          <section className={styles.userPanel}>
+            <section className={styles.topPart}>
+              <p className={styles.greetings}>
+                Hello, <b>User!</b>
+              </p>
+              <div className={styles.right}>
+                <p className={styles.balance}>
+                  Balance:{" "}
+                  <b>
+                    {currentUser && currentUser?.balance < 0 ? "-" : ""}
+                    {formatter.format(Math.abs(Number(currentUser?.balance)))}
+                  </b>
+                </p>
+                <button onClick={handleDeleteAllOperations} className={styles.clearOperations}>
+                  Clear operations
+                </button>
+              </div>
+            </section>
+            <section className={styles.bottomPart}>
+              <button className={styles.orderBy}>
+                Order by
+                <img src={OrderByIcon} alt="Arrows pointing up and down" />
+              </button>
+              <button className={styles.newOperation}>New operation</button>
+            </section>
+          </section>
 
-          {userOperations && userOperations.length > 0 && (
+          {/* {userOperations && userOperations.length > 0 && (
             <PieChart
               incomesTotal={incomesTotal}
               expensesTotal={expensesTotal}
               expenses={expensesPercentage}
               incomes={incomesPercentage}
             />
-          )}
+          )} */}
 
           <div className="operations">
-            <button onClick={handleDeleteAllOperations}>
-              Delete all operations
-            </button>
             <h2>Operations</h2>
             {userOperations && userOperations.length > 0 ? (
               <>
