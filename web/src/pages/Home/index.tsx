@@ -47,11 +47,13 @@ export function Home() {
   }
 
   async function addNewOperation(operation: IOperation) {
+    const checkedDate = !operation.date ? new Date() : operation.date
+    
     const res = await api.post("/operations", {
       name: operation.name,
       type: operation.type,
       amount: operation.amount,
-      date: operation.date,
+      date: checkedDate,
     });
 
     updateUserBalance(res.data.newBalance);

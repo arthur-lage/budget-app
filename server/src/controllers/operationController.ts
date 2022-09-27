@@ -60,7 +60,7 @@ export const operationController = {
         newBalance = currentBalance + amount;
       }
 
-      const convertedDate = new Date(date);
+      const convertedDate = date ? new Date(date) : new Date();
 
       const newOperation = new Operation(name, type, amount, convertedDate, id);
 

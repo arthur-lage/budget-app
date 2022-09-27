@@ -68,9 +68,9 @@ export function OperationCard({
           <div className={styles.property}>
             <p className={styles.propertyName}>Created at</p>
             <p className={styles.propertyValue}>
-              {new Date(operation.date).getFullYear()}/
-              {new Date(operation.date).getMonth()}/
-              {new Date(operation.date).getDate()}
+              {new Date(operation.createdAt).getFullYear()}/
+              {new Date(operation.createdAt).getMonth()}/
+              {new Date(operation.createdAt).getDate()}
             </p>
           </div>
         </div>

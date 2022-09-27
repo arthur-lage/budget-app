@@ -12,7 +12,11 @@ export function NewOperationModal({
   const [operationName, setOperationName] = useState("");
   const [operationType, setOperationType] = useState("income");
   const [operationAmount, setOperationAmount] = useState(0);
-  const [operationDate, setOperationDate] = useState("");
+  const [operationDate, setOperationDate] = useState<string>(convertDateToYearMonthDay(new Date().toISOString()));
+
+  function convertDateToYearMonthDay(date: string) {
+    return date.split("T")[0]
+  }
 
   async function submitForm(e: FormEvent) {
     e.preventDefault();
@@ -21,13 +25,13 @@ export function NewOperationModal({
       name: String(operationName),
       type: String(operationType),
       amount: Number(operationAmount),
-      date: new Date(operationDate),
+      date: operationDate,
     });
 
     setOperationName("");
     setOperationType("income")
     setOperationAmount(0);
-    setOperationDate("");
+    setOperationDate(convertDateToYearMonthDay(new Date().toISOString()));
 
     handleCloseNewOperationModal();
   }
