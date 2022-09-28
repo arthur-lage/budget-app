@@ -1,4 +1,2 @@
 - CREATE DESIGN FOR HOME PAGE
 - STYLE HOME PAGE
-- if no dates are provided, use current date as default
-- created at and date conflict

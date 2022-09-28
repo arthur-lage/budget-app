@@ -1,4 +1,7 @@
+import { X } from "phosphor-react";
 import { FormEvent, useState } from "react";
+
+import styles from './styles.module.scss'
 
 type NewOperationModalProps = {
   handleCloseNewOperationModal: () => void;
@@ -38,23 +41,15 @@ export function NewOperationModal({
 
   return (
     <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: "#00000019",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className={styles.container}
     >
-      <div>
-        <button onClick={handleCloseNewOperationModal}>Close modal</button>
-        <form onSubmit={submitForm}>
-          <div className="input-field">
-            <label htmlFor="operation-name">Operation name</label>
+      <div className={styles.modal}>
+        <button className={styles.closeButton} onClick={handleCloseNewOperationModal}>
+          <X size={64} color="#000" />
+        </button>
+        <form className={styles.form} onSubmit={submitForm}>
+          <div className={styles.inputField}>
+            <label htmlFor="operation-name">Operation Name</label>
             <input
               value={operationName}
               onChange={(e) => setOperationName(e.target.value)}
@@ -63,8 +58,23 @@ export function NewOperationModal({
             />
           </div>
 
-          <div className="input-field">
-            <label htmlFor="operation-type">Operation type</label>
+          
+
+          <div className={styles.inputField}>
+            <label htmlFor="operation-amount">Operation Amount</label>
+            <input
+              value={operationAmount}
+              //@ts-ignore
+              onChange={(e) => setOperationAmount(e.target.value)}
+              type="number"
+              min="0"
+              step="any"
+              id="operation-amount"
+            />
+          </div>
+
+          <div className={styles.inputField}>
+            <label htmlFor="operation-type">Operation Type</label>
             <select
               onChange={(e) => setOperationType(e.target.value)}
               value={operationType}
@@ -77,21 +87,8 @@ export function NewOperationModal({
             </select>
           </div>
 
-          <div className="input-field">
-            <label htmlFor="operation-amount">Amount</label>
-            <input
-              value={operationAmount}
-              //@ts-ignore
-              onChange={(e) => setOperationAmount(e.target.value)}
-              type="number"
-              min="0"
-              step="any"
-              id="operation-amount"
-            />
-          </div>
-
-          <div className="input-field">
-            <label htmlFor="operation-date">Date</label>
+          <div className={styles.inputField}>
+            <label htmlFor="operation-date">Operation Date</label>
             <input
               value={operationDate}
               onChange={(e) => setOperationDate(e.target.value)}
@@ -100,7 +97,7 @@ export function NewOperationModal({
             />
           </div>
 
-          <button type="submit">Add new operation</button>
+          <button className={styles.newOperation} type="submit">Create Operation</button>
         </form>
       </div>
     </div>
